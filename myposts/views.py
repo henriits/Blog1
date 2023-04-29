@@ -3,9 +3,9 @@ from django.shortcuts import render
 from myposts.models import Post
 # Create your views here.
 def home(request):
-    post = Post.objects.all()
+    recent_post = Post.objects.all().order_by("-created_date")
 
-    return render(request, 'home.html', {'posts': post})
+    return render(request, 'home.html', {'posts': recent_post})
 
 
 def posts(request):
