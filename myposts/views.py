@@ -39,3 +39,13 @@ class PostCreateView(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = "update_post.html"
+    fields = ["title", "text", ]
+    success_url = reverse_lazy("posts")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)

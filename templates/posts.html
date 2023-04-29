@@ -17,6 +17,7 @@
       <h5><span class="glyphicon glyphicon-time"></span> Post by {{ entry.author.username }}, {{ entry.created_date }}</h5>
       <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
       <p>{{ entry.body }}</p>
+        <div><a href="{% url 'post_update' entry.pk %}" class="btn btn-primary">Update</a></div>
       <br><br>
       {% endfor %}
 
