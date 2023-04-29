@@ -11,3 +11,5 @@ def home(request):
 def posts(request):
     post = Post.objects.all()
     return render(request, "posts.html",  {'posts': post})
+
+
