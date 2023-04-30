@@ -31,7 +31,7 @@ class PostView(LoginRequiredMixin,ListView):
         return render(request, "posts.html", {'posts': post})"""
 
     model = Post
-    template_name = 'post.html'
+    template_name = 'posts.html'
     success_url = reverse_lazy('posts')
     context_object_name = 'posts'
 
