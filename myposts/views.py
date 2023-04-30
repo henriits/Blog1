@@ -17,6 +17,12 @@ import pdb
 
 # def home(request):
 
+class NewlayoutView(ListView):
+    model = Post
+    template_name = "new_layout.html"
+    success_url = reverse_lazy("home")
+    context_object_name = "posts"
+
 
 class HomeView(ListView):
     """    def get(self,request):
