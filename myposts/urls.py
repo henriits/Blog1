@@ -7,5 +7,5 @@ urlpatterns = [
     path("create/", PostCreateView.as_view(), name="post_create"),
     path("update/<int:pk>", PostUpdateView.as_view(), name="post_update"),
     path("delete/<int:pk>", PostDeleteView.as_view(), name="post_delete"),
-    path("accounts/signup/", signup, name="signup"),
+    path("accounts/signup/", UserCreateView.as_view(), name="signup"),
 ]

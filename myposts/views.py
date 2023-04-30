@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
@@ -8,7 +9,7 @@ from .models import Post
 from django.contrib.auth.decorators import login_required
 
 # These are for class based views
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, View
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, View, FormView
 
 # this library is used for debugging
 import pdb
@@ -28,8 +29,7 @@ class HomeView(ListView):
     success_url = reverse_lazy("home")
     context_object_name = "posts"
 
-    def get_queryset(self):
-        return super().get_queryset().filter(author=self.request.user).order_by("-created_date")
+
 
 
 class PostView(LoginRequiredMixin, ListView):
@@ -79,7 +79,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("posts")
 
 
-def signup(request):
+"""def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -88,3 +88,14 @@ def signup(request):
         else:
             form = SignUpForm()
         return render(request, "registration/signup.html", {'form': form})
+"""
+
+class UserCreateView(CreateView):
+    model = User
+    template_name = 'registration/signup.html'
+    form_class = SignUpForm
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
