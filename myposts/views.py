@@ -45,7 +45,8 @@ class PostView(LoginRequiredMixin, ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return super().get_queryset().filter(author=self.request.user)
+        """This filters out other posts and only shows user posts!"""
+        return super().get_queryset().filter(author=self.request.user).order_by("-created_date")
 
 
 # class based views
