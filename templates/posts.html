@@ -4,18 +4,26 @@
 {% block content %}
 
 
-<div class="card mb-4">
+<div class="container-fluid card my-8 ">
+    <h3>Here You see YOUR created posts!</h3>
     {% for entry in posts %}
-    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg"
+    <a href="#!"><img class="card-img-top"
+                      src="https://images.unsplash.com/photo-1682344060028-7672c660ab05?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
                       alt="..."/></a>
     <div class="card-body">
         <div class="small text-muted">{{ entry.create_date}}</div>
         <h2 class="card-title"> {{ entry.title }}</h2>
         <p class="card-text">{{ entry.text }}</p>
-        <a class="btn btn-primary" href="#!">Read more →</a>
+
+    </div>
+    <hr>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+      <a href="{% url 'post_update' entry.pk %}" class="btn w-50 m-3 btn-outline-secondary">Update</a>
+       <a href="{% url 'post_delete' entry.pk %}" class="btn w-50 m-3 btn-danger">Delete</a>
     </div>
     {% endfor %}
 </div>
 
 
 {% endblock %}
+
