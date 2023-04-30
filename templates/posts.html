@@ -1,27 +1,28 @@
 {% extends 'base.html' %}
 
 
- {% block content %}
+{% block content %}
 
 
+<div class="col-sm-9">
 
 
-    <div class="col-sm-9">
-
-
-
-      <h4><small>RECENT POSTS</small></h4>
-       {% for entry in posts %}
-      <hr>
-      <h2>{{ entry.title }}</h2>
-      <h5><span class="glyphicon glyphicon-time"></span> Post by {{ entry.author.username }}, {{ entry.created_date }}</h5>
-      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-      <p>{{ entry.body }}</p>
-        <div><a href="{% url 'post_update' entry.pk %}" class="btn btn-primary">Update</a></div>
-      <br><br>
-      {% endfor %}
-
+    <h4><small>RECENT POSTS</small></h4>
+    {% for entry in posts %}
+    <hr>
+    <h2>{{ entry.title }}</h2>
+    <h5><span class="glyphicon glyphicon-time"></span> Post by {{ entry.author.username }}, {{ entry.created_date }}
+    </h5>
+    <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
+    <p>{{ entry.body }}</p>
+    <div>
+        <a href="{% url 'post_update' entry.pk %}" class="btn btn-primary">Update</a>
+        <a href="{% url 'post_delete' entry.pk %}" class="btn btn-danger">Delete</a>
     </div>
+    <br><br>
+    {% endfor %}
+
+</div>
 
 
 {% endblock %}
