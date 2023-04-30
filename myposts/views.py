@@ -16,12 +16,20 @@ import pdb
 #def home(request):
 
 
-class HomeView(View):
-    def get(self,request):
+class HomeView(ListView):
+    """    def get(self,request):
         recent_post = Post.objects.all().order_by("-created_date")
 
-        return render(request, 'home.html', {'posts': recent_post})
+        return render(request, 'home.html', {'posts': recent_post})"""
 # decorator for only authenticated user
+    model = Post
+    template_name = "home.html"
+    success_url = reverse_lazy("home")
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(author=self.request.user).order_by("-created_date")
+
 
 class PostView(LoginRequiredMixin,ListView):
     """    def get(self,request):
