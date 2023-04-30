@@ -23,12 +23,20 @@ class HomeView(View):
         return render(request, 'home.html', {'posts': recent_post})
 # decorator for only authenticated user
 
-class PostView(LoginRequiredMixin,View):
-    def get(self,request):
+class PostView(LoginRequiredMixin,ListView):
+    """    def get(self,request):
         # filter posts to list only for login  users
 
         post = Post.objects.filter(author=request.user)
-        return render(request, "posts.html", {'posts': post})
+        return render(request, "posts.html", {'posts': post})"""
+
+    model = Post
+    template_name = 'post.html'
+    success_url = reverse_lazy('posts')
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(author=self.request.user)
 
 
 # class based views
