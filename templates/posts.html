@@ -4,24 +4,17 @@
 {% block content %}
 
 
-<div class="col-sm-9">
-
-
-    <h4><small>RECENT POSTS</small></h4>
+<div class="card mb-4">
     {% for entry in posts %}
-    <hr>
-    <h2>{{ entry.title }}</h2>
-    <h5><span class="glyphicon glyphicon-time"></span> Post by {{ entry.author.username }}, {{ entry.created_date }}
-    </h5>
-    <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-    <p>{{ entry.body }}</p>
-    <div>
-        <a href="{% url 'post_update' entry.pk %}" class="btn btn-primary">Update</a>
-        <a href="{% url 'post_delete' entry.pk %}" class="btn btn-danger">Delete</a>
+    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg"
+                      alt="..."/></a>
+    <div class="card-body">
+        <div class="small text-muted">{{ entry.create_date}}</div>
+        <h2 class="card-title"> {{ entry.title }}</h2>
+        <p class="card-text">{{ entry.text }}</p>
+        <a class="btn btn-primary" href="#!">Read more →</a>
     </div>
-    <br><br>
     {% endfor %}
-
 </div>
 
 
