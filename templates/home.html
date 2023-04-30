@@ -1,26 +1,25 @@
 {% extends 'base.html' %}
 
 
- {% block content %}
+{% block content %}
 
 
-
-
-    <div class="col-sm-9">
-
-
-
-      <h4><small>RECENT POSTS</small></h4>
-       {% for entry in posts %}
-      <hr>
-      <h2>{{ entry.title }}</h2>
-      <h5><span class="glyphicon glyphicon-time"></span> Post by {{ entry.author.username }}, {{ entry.created_date }}</h5>
-      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-      <p>{{ entry.text }}</p>
-      <br><br>
-      {% endfor %}
-
+<div class="container-fluid card mb-4">
+    {% for entry in posts %}
+    <a href="#!"><img class="card-img-top"
+                      src="https://images.unsplash.com/photo-1682344060028-7672c660ab05?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                      alt="..."/></a>
+    <div class="card-body">
+        <div class="small text-muted">
+            <h1 class="card-title"> {{ entry.title }}</h1>
+            <h6 class="card-text">{{ entry.text }}</h6>
+            <hr>
+            <p> Posted by {{ entry.author.username.capitalize }} at {{ entry.created_date }} </p>
+            <a class="btn w-100 btn-primary" href="#!">Read more →</a>
+        </div>
     </div>
+    {% endfor %}
+</div>
 
 
 {% endblock %}
