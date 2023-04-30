@@ -20,7 +20,7 @@ def home(request):
 
 # decorator for only authenticated user
 
-@login_required()
+@login_required
 def posts(request):
     # filter posts to list only for login  users
 
@@ -49,3 +49,11 @@ class PostUpdateView(UpdateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = "post_delete.html"
+    context_object_name = "post"
+    success_url = reverse_lazy("posts")
+
