@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from myposts.models import Post
+from .forms import SignUpForm, PostForm
+from .models import Post
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 
@@ -13,7 +14,7 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView, V
 import pdb
 
 
-#def home(request):
+# def home(request):
 
 
 class HomeView(ListView):
@@ -21,7 +22,7 @@ class HomeView(ListView):
         recent_post = Post.objects.all().order_by("-created_date")
 
         return render(request, 'home.html', {'posts': recent_post})"""
-# decorator for only authenticated user
+    # decorator for only authenticated user
     model = Post
     template_name = "home.html"
     success_url = reverse_lazy("home")
@@ -31,7 +32,7 @@ class HomeView(ListView):
         return super().get_queryset().filter(author=self.request.user).order_by("-created_date")
 
 
-class PostView(LoginRequiredMixin,ListView):
+class PostView(LoginRequiredMixin, ListView):
     """    def get(self,request):
         # filter posts to list only for login  users
 
@@ -76,3 +77,14 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "post_delete.html"
     context_object_name = "post"
     success_url = reverse_lazy("posts")
+
+
+def signup(request):
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+        else:
+            form = SignUpForm()
+        return render(request, "registration/signup.html", {'form': form})
