@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
@@ -6,31 +7,33 @@ from myposts.models import Post
 from django.contrib.auth.decorators import login_required
 
 # These are for class based views
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, View
 
 # this library is used for debugging
 import pdb
 
 
-def home(request):
-    recent_post = Post.objects.all().order_by("-created_date")
-
-    return render(request, 'home.html', {'posts': recent_post})
+#def home(request):
 
 
+class HomeView(View):
+    def get(self,request):
+        recent_post = Post.objects.all().order_by("-created_date")
+
+        return render(request, 'home.html', {'posts': recent_post})
 # decorator for only authenticated user
 
-@login_required
-def posts(request):
-    # filter posts to list only for login  users
+class PostView(LoginRequiredMixin,View):
+    def get(self,request):
+        # filter posts to list only for login  users
 
-    post = Post.objects.filter(author=request.user)
-    return render(request, "posts.html", {'posts': post})
+        post = Post.objects.filter(author=request.user)
+        return render(request, "posts.html", {'posts': post})
 
 
 # class based views
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "create_post.html"
     fields = ["title", "text", ]
@@ -40,7 +43,8 @@ class PostCreateView(CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class PostUpdateView(UpdateView):
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     template_name = "update_post.html"
     fields = ["title", "text", ]
@@ -51,9 +55,8 @@ class PostUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = "post_delete.html"
     context_object_name = "post"
     success_url = reverse_lazy("posts")
-
