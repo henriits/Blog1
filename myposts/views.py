@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from .forms import SignUpForm, PostForm
+
+
+
 from .models import Post
 # Create your views here.
 from django.contrib.auth.decorators import login_required
@@ -13,27 +16,6 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView, V
 
 # this library is used for debugging
 import pdb
-
-
-# def home(request):
-
-class NewlayoutView(ListView):
-    model = Post
-    template_name = "new_layout.html"
-    success_url = reverse_lazy("home")
-    context_object_name = "posts"
-
-
-class HomeView(ListView):
-    """    def get(self,request):
-        recent_post = Post.objects.all().order_by("-created_date")
-
-        return render(request, 'home.html', {'posts': recent_post})"""
-    # decorator for only authenticated user
-    model = Post
-    template_name = "home.html"
-    success_url = reverse_lazy("home")
-    context_object_name = "posts"
 
 
 
@@ -97,12 +79,3 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
         return render(request, "registration/signup.html", {'form': form})
 """
 
-class UserCreateView(CreateView):
-    model = User
-    template_name = 'registration/signup.html'
-    form_class = SignUpForm
-    success_url = reverse_lazy('login')
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
