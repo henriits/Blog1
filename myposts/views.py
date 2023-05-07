@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from .forms import SignUpForm, PostForm
+#   from .forms import SignUpForm, PostForm  / post form is not required if used createpost
 
 
 
