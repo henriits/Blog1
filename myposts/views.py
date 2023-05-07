@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-#   from .forms import SignUpForm, PostForm  / post form is not required if used createpost
+#   from .forms import SignUpForm, PostForm  / post form is not required if used createpostposts/
 
 
 
@@ -28,7 +28,7 @@ class PostView(LoginRequiredMixin, ListView):
         return render(request, "posts.html", {'posts': post})"""
 
     model = Post
-    template_name = 'posts.html'
+    template_name = 'posts/posts.html'
     success_url = reverse_lazy('posts')
     context_object_name = 'posts'
 
@@ -41,7 +41,7 @@ class PostView(LoginRequiredMixin, ListView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    template_name = "create_post.html"
+    template_name = "posts/create_post.html"
     fields = ["title", "text", ]
     success_url = reverse_lazy("posts")
 
@@ -52,7 +52,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
-    template_name = "update_post.html"
+    template_name = "posts/update_post.html"
     fields = ["title", "text", ]
     success_url = reverse_lazy("posts")
 
@@ -63,7 +63,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
-    template_name = "post_delete.html"
+    template_name = "posts/post_delete.html"
     context_object_name = "post"
     success_url = reverse_lazy("posts")
 
