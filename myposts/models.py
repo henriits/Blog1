@@ -9,6 +9,8 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=200)
     text = models.TextField()
+    image = models.ImageField(upload_to="images/",null=True, blank=True)
+    is_featured = models.BooleanField(default=False)
     created_date = models.DateTimeField(
         default=timezone.now
     )
