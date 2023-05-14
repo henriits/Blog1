@@ -1,33 +1,39 @@
 {% extends 'base.html' %}
 
 
-{% block content %}
+ {% block content %}
 
+    <form method="get">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" name="q" placeholder="Search for posts">
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+      </div>
+    </form>
+{% if posts %}
+    <div class="col-sm-9">
+      <h4><small>All POSTS</small></h4>
+        {% for entry in posts %}
+      <div class="row">
+        <div class="col-lg-12">
+        <h2>{{entry.title}}</h2>
+         <h5><span class="glyphicon glyphicon-time"></span> Post by {{entry.author.username}}, {{entry.created_date}}.</h5>
+        <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
+        <p>   {{entry.text}}   <br><br>
+              <a href="{% url 'post_update' entry.pk%}" class="btn btn-info">Update</a>
+              <a href="{% url 'post_delete' entry.pk%}" class="btn btn-danger">Delete</a>
+        </div>
 
-<div class="container-fluid card my-8 ">
-    <h3>Here You see YOUR created posts!</h3>
-    {% for entry in posts %}
-    <a href="#!">
-        {% if entry.image %}
-        <img class="card-img-top "
-                      src="{{ entry.image.url }}"
-                      alt="..." width="50"/>
+      </div>
+
+        {% endfor %}
+        {% else %}
+      <p>No posts found.</p>
         {% endif %}
-    </a>
-    <div class="card-body">
-        <div class="small text-muted">{{ entry.create_date}}</div>
-        <h2 class="card-title"> {{ entry.title }}</h2>
-        <p class="card-text">{{ entry.text }}</p>
+
+
 
     </div>
-    <hr>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-      <a href="{% url 'post_update' entry.pk %}" class="btn w-50 m-3 btn-outline-secondary">Update</a>
-       <a href="{% url 'post_delete' entry.pk %}" class="btn w-50 m-3 btn-danger">Delete</a>
-    </div>
-    {% endfor %}
-</div>
+
 
 
 {% endblock %}
-

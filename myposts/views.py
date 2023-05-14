@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
+from .forms import PostForm
 #   from .forms import SignUpForm, PostForm  / post form is not required if used createpostposts/
 
 
@@ -32,13 +33,25 @@ class PostView(LoginRequiredMixin, ListView):
         return queryset
 
 
+@login_required
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('list_posts')
+    else:
+        form = PostForm()
+    return render(request, 'posts/create_post.html', {'form': form})
 
 # class based views
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "posts/create_post.html"
-    fields = ["title", "text", "image"]
+    fields = ["title", "text", "image","is_featured"]
     success_url = reverse_lazy("posts")
 
     def form_valid(self, form):

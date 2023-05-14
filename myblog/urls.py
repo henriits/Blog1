@@ -23,7 +23,7 @@ from myblog.views import UserCreateView, home,about
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home, name="home"),
-    path("posts/", include("myposts.urls")),
+    path("", include("myposts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("about/", about, name="about"),
     path("accounts/signup/", UserCreateView.as_view(), name="signup"),
