@@ -3,16 +3,11 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
+from rest_framework import viewsets
 from .forms import PostForm
-#   from .forms import SignUpForm, PostForm  / post form is not required if used createpostposts/
-
-
+from myposts.serializers import PostSerializer
 from .models import Post
-# Create your views here.
 from django.contrib.auth.decorators import login_required
-
-# These are for class based views
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, View, FormView
 
 # this library is used for debugging
@@ -77,19 +72,8 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("posts")
 
 
-# class PostSearchView(ListView):
-#     model = Post
-#     template_name = "posts/post_search.html"
-#     pass
+# REST API
 
-
-"""def signup(request):
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("login")
-        else:
-            form = SignUpForm()
-        return render(request, "registration/signup.html", {'form': form})
-"""
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all().order_by('title')
+    serializer_class = PostSerializer
