@@ -18,14 +18,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from myblog.views import AboutView, UserCreateView, HomeView
+from myblog.views import UserCreateView, home,about
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", HomeView.as_view(), name="home"),
-    path("", include("myposts.urls")),
+    path("", home, name="home"),
+    path("posts/", include("myposts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("about/", AboutView.as_view(), name="about"),
+    path("about/", about, name="about"),
     path("accounts/signup/", UserCreateView.as_view(), name="signup"),
 
 ]
