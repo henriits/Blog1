@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 #   from .forms import SignUpForm, PostForm  / post form is not required if used createpostposts/
-
 
 
 from .models import Post
@@ -18,23 +18,19 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView, V
 import pdb
 
 
-
-
 class PostView(LoginRequiredMixin, ListView):
-    """    def get(self,request):
-        # filter posts to list only for login  users
-
-        post = Post.objects.filter(author=request.user)
-        return render(request, "posts.html", {'posts': post})"""
-
     model = Post
     template_name = 'posts/posts.html'
-    success_url = reverse_lazy('posts')
+    success_url = reverse_lazy('list_posts')
     context_object_name = 'posts'
 
     def get_queryset(self):
-        """This filters out other posts and only shows user posts!"""
-        return super().get_queryset().filter(author=self.request.user).order_by("-created_date")
+        queryset = super().get_queryset().filter(author=self.request.user)
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(Q(title__icontains=query) | Q(text__icontains=query))
+        return queryset
+
 
 
 # class based views
@@ -42,7 +38,7 @@ class PostView(LoginRequiredMixin, ListView):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "posts/create_post.html"
-    fields = ["title", "text", "image" ]
+    fields = ["title", "text", "image"]
     success_url = reverse_lazy("posts")
 
     def form_valid(self, form):
@@ -53,7 +49,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     template_name = "posts/update_post.html"
-    fields = ["title", "text", "image" ]
+    fields = ["title", "text", "image"]
     success_url = reverse_lazy("posts")
 
     def form_valid(self, form):
@@ -68,6 +64,12 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("posts")
 
 
+# class PostSearchView(ListView):
+#     model = Post
+#     template_name = "posts/post_search.html"
+#     pass
+
+
 """def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -78,4 +80,3 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
             form = SignUpForm()
         return render(request, "registration/signup.html", {'form': form})
 """
-
